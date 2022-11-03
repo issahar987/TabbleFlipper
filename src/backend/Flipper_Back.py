@@ -66,20 +66,19 @@ def exportChain(Chain):
     IP_tables = ShowChain(Chain, "-S")
     # delete first three IPtables string
     IP_tables = IP_tables.splitlines()
-    print(IP_tables[1])
     del IP_tables[0]
     data = {}
-    with open('EXPORT.txt', 'w') as file:
+    with open(f'{Chain}_export.json', 'w') as file:
         for chainlink in IP_tables:
             chainlink = chainlink.split(" ")
-            chainlink[3] = chainlink[3][:-3]
-            print(soc.gethostbyaddr(chainlink[3]))
-            data[soc.gethostbyaddr(chainlink[3])] = {
-                    #"iplist": soc.gethostbyname((soc.gethostbyaddr(chainlink[3]))[0])
-                    "direction": [2],
-                    "action": chainlink[5],
-                    "chain name": chainlink[1],
-                }
+            del chainlink[:2]
+            print(chainlink)
+            data[soc.gethostbyaddr(chainlink[2])] = {
+                    #"iplist": soc.gethostbyname((soc.gethostbyaddr(chainlink[3]))[0]),
+                    "direction": chainlink[1],
+                    "action": chainlink[4],
+                    "chainname": chainlink[0],
+                    }
         json.dump(data, file)
     pass
 
