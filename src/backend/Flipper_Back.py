@@ -21,7 +21,7 @@ def addJson(IpDns, Chain):
             f.close
     except:
         pass
-    for item in soc.gethostname(IpDns):
+    for item in soc.gethostbyname(IpDns):
         data[item] = IpDns
     with open(txtfile, 'w') as f:
         json.dump(data, f)
@@ -57,7 +57,7 @@ def AddRule(Chain, SourcDest, IpDns, WhatDo):
 
 
 def deleteRule(Chain, ChainLinkNumber):
-    sb.run("sudo", "-S", "iptables", "-D", Chain, ChainLinkNumber,
+    sb.run(["sudo", "-S", "iptables", "-D", Chain, ChainLinkNumber],
            input=os.environ['sudopswd'], encoding="ascii")
     pass
 
