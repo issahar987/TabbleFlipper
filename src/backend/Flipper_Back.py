@@ -21,10 +21,12 @@ def addJson(IpDns, Chain):
             f.close
     except:
         pass
-    for item in soc.gethostbyname(IpDns):
-        data[item] = IpDns
+    print(soc.gethostbyname_ex(IpDns))
+    print(type(soc.gethostbyname_ex(IpDns)))
+    # for item in soc.gethostbyname(IpDns):
+    data[IpDns] = soc.gethostbyname_ex(IpDns)[2]
     with open(txtfile, 'w') as f:
-        json.dump(data, f)
+        json.dump(data, f, ensure_ascii=False, indent=4)
     pass
 
 
@@ -67,19 +69,24 @@ def exportChain(Chain):
     # delete first three IPtables string
     IP_tables = IP_tables.splitlines()
     del IP_tables[0]
+    print(IP_tables)
     data = {}
     with open(f'{Chain}_export.json', 'w') as file:
         for chainlink in IP_tables:
             chainlink = chainlink.split(" ")
-            del chainlink[:2]
+            del chainlink[:1]
             print(chainlink)
-            data[soc.gethostbyaddr(chainlink[2])] = {
+            ip = chainlink[2][:-3]  # delete netmask /32
+            print(type(chainlink[2][:-3]))
+            print(soc.gethostbyaddr(ip))
+            print(type(soc.gethostbyaddr(ip)))
+            data[soc.gethostbyaddr(ip)[0]] = {
                     #"iplist": soc.gethostbyname((soc.gethostbyaddr(chainlink[3]))[0]),
                     "direction": chainlink[1],
                     "action": chainlink[4],
                     "chainname": chainlink[0],
                     }
-        json.dump(data, file)
+        json.dump(data, file, ensure_ascii=False, indent=4)
     pass
 
 
