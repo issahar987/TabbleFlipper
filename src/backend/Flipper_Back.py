@@ -24,8 +24,10 @@ def addJson(IpDns, Chain):
     print(soc.gethostbyname_ex(IpDns))
     print(type(soc.gethostbyname_ex(IpDns)))
     # for item in soc.gethostbyname(IpDns):
-    data[IpDns] = soc.gethostbyname_ex(IpDns)[2]
+    # data[IpDns] = soc.gethostbyname_ex(IpDns)[2]
     with open(txtfile, 'w') as f:
+        for item in soc.gethostbyname_ex(IpDns)[2]:
+            data[item] = IpDns
         json.dump(data, f, ensure_ascii=False, indent=4)
     pass
 
