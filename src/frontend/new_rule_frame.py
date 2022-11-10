@@ -2,6 +2,8 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
 from backend import Flipper_Back
+from frontend import submit
+from frontend import enter_sudo
 from pathlib import Path
 import os
 import json
@@ -40,6 +42,7 @@ class NewRuleFrame(ctk.CTkFrame):
         self.button_export.grid(column=2, row=0, padx=1 * self.padx, pady=self.pady, sticky='e')
 
     def new_rule(self):
+        window = submit.App_Submit()
         print("new_rule")
 
     def import_(self):
