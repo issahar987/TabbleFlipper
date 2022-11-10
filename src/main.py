@@ -9,7 +9,7 @@ import socket
 if __name__ == "__main__":
     #  create a window first
     # define window dimensions width and height
-    WINDOW_WIDTH = 800
+    WINDOW_WIDTH = 600
     WINDOW_HEIGHT = 800
     Flipper_Back.EnterSudo("kali")
     app = App.App(WINDOW_WIDTH, WINDOW_HEIGHT)
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     # lock window to not be resizable
     app.resizable(False, False)
     # initialise the window
-    app.mainloop(0)
+    app.mainloop()

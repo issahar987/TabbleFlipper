@@ -133,4 +133,4 @@ dmypy.json
 .vscode
 
 *.txt
-*.json
+INPUT_dns.json
