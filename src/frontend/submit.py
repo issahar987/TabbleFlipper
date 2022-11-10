@@ -2,7 +2,6 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
 from backend import Flipper_Back as FB
-from frontend import enter_sudo
 import socket
 # from enter_sudo import App_enter_sudo
 import os
@@ -11,7 +10,6 @@ from getpass import getpass
 
 class App_Submit(ctk.CTkToplevel):
     def __init__(self):
-        enter_sudo.App_enter_sudo()
         super().__init__()
         self.minsize(840, 50)
         self.maxsize(850, 175)
@@ -38,10 +36,10 @@ class App_Submit(ctk.CTkToplevel):
                                                       variable=self.direction,)
         self.option_box_action = ctk.CTkOptionMenu(master=self.frame_submit_minimal,
                                                    values=[
-                                                          "Drop", "Accept", "Return", "reject"],
+                                                          "DROP", "ACCEPT", "RETURN", "REJECT"],
                                                    variable=self.action,)
         self.option_box_chain = ctk.CTkOptionMenu(master=self.frame_submit_minimal,
-                                                  values=["WIP"],
+                                                  values=["INPUT"],
                                                   variable=self.chain,)
 
         self.frame_submit_optional = ctk.CTkFrame(master=self.frame_Main,
@@ -83,14 +81,13 @@ class App_Submit(ctk.CTkToplevel):
         self.option_box_packet.grid(column=1, row=0, padx=10, pady=10)
 
     def submit(self):
-        print(f"IP: {self.entry_ip_dns.get()} {self.option_box_action.get()} {self.option_box_chain.get()} {self.option_box_direction.get()}")
+        print(f"IP: {self.option_box_chain.get()} {self.option_box_direction.get()} {self.entry_ip_dns.get()} {self.option_box_action.get()}")
         FB.AddRule(self.option_box_chain.get(), self.option_box_direction.get(),
                    self.entry_ip_dns.get(), self.option_box_action.get())
         self.destroy()
 
     def clear_entry(self, event, entry, last):
         entry.delete(0, last)
-
 
         #Flipper_Back.AddRule("INPUT", "-s", self.entry.get(), "DROP")
         ### definition

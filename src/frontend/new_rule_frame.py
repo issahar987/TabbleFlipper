@@ -12,16 +12,16 @@ import json
 class NewRuleFrame(ctk.CTkFrame):
     def __init__(self, width, height, button_width, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.width=width
-        self.height=height
-        self.button_width=button_width
-        self.padx=43
-        self.pady=20
+        self.width = width
+        self.height = height
+        self.button_width = button_width
+        self.padx = 43
+        self.pady = 20
 
-        self.configure(width = self.width,
-                       height = self.height)
+        self.configure(width=self.width,
+                       height=self.height)
         self.grid_propagate(False)
-        
+
         self.button_import = ctk.CTkButton(master=self,
                                            width=self.button_width,
                                            text="Import",
@@ -35,14 +35,15 @@ class NewRuleFrame(ctk.CTkFrame):
                                              text="New rule",
                                              command=self.new_rule)
 
-        
-
-        self.button_import.grid(column=0, row=0, padx=1 * self.padx, pady=self.pady, sticky='w')
-        self.button_new_rule.grid(column=1, row=0, padx=1.5 * self.padx, pady=self.pady, sticky='n')
-        self.button_export.grid(column=2, row=0, padx=1 * self.padx, pady=self.pady, sticky='e')
+        self.button_import.grid(
+            column=0, row=0, padx=1 * self.padx, pady=self.pady, sticky='w')
+        self.button_new_rule.grid(
+            column=1, row=0, padx=1.5 * self.padx, pady=self.pady, sticky='n')
+        self.button_export.grid(
+            column=2, row=0, padx=1 * self.padx, pady=self.pady, sticky='e')
 
     def new_rule(self):
-        window = submit.App_Submit()
+        submit.App_Submit()
         print("new_rule")
 
     def import_(self):

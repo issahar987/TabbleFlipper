@@ -7,6 +7,8 @@ import socket as soc
 
 def EnterSudo(passwd):
     os.environ['sudopswd'] = passwd
+    print(sb.check_output(["sudo", "-S", "ls"],
+                          input=os.environ['sudopswd'], encoding="ascii"))
     pass
 
 
@@ -55,9 +57,14 @@ def ClearAll():
 
 
 def AddRule(Chain, SourcDest, IpDns, WhatDo):
+    if SourcDest == "source":
+        SourcDest = "-s"
+    else:
+        SourcDest = "-d"
+    print(Chain)
     sb.run(["sudo", "-S", "iptables", "-A", Chain, SourcDest, IpDns, "-j", WhatDo],
            input=os.environ['sudopswd'], encoding="ascii")
-    addJson(IpDns, Chain)
+    #addJson(IpDns, Chain)
 
 
 def deleteRule(Chain, ChainLinkNumber):
@@ -102,6 +109,3 @@ def importChain(FileName):
             sb.run(item,
                    input=os.environ['sudopswd'], encoding="ascii")
     pass
-
-
-EnterSudo("")
