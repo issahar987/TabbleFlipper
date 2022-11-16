@@ -31,7 +31,7 @@ class FunctionsFrame(ctk.CTkFrame):
         self.button_refresh = ctk.CTkButton(master=self,
                                             width=self.button_width,
                                             text="Refresh",
-                                            command=self.refresh())
+                                            command=self.refresh)
         self.button_clear = ctk.CTkButton(master=self,
                                           width=self.button_width,
                                           text="Clear all",
@@ -69,15 +69,19 @@ class FunctionsFrame(ctk.CTkFrame):
         # IP_tables = Flipper_Back.ShowChain("INPUT").split("\n")
         
         IP_tables = Flipper_Back.ShowRules().split("\n")
+        IP_tables_filtered = []
         IP_list = []
-        del IP_tables[0:3]  # delete first three IPtables string
-        del IP_tables[-1] # delete empty string at the end
-        for item in IP_tables:
-            item = item.split(' ')
-            del item[0:3]  # delete flags
-            del item[1:3]  # delete -j and DROP
-            item = item[0][:-3]  # delete netmask /32
-            IP_list.append(item)
+        for item in IP_tables:  # delete chain names in IP_tables
+            if '-A' in item:
+                if item:
+                    IP_tables_filtered.append(item.split())
+        if IP_tables_filtered:
+            for item in IP_tables_filtered:
+                print(item)
+                del item[0:3]  # delete flags
+                del item[1:3]  # delete -j and DROP
+                item = item[0][:-3]  # delete netmask /32
+                IP_list.append(item)
         print(IP_list)
         print(self.ip_list_frame)
 
