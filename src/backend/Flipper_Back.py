@@ -35,6 +35,7 @@ def addJson(IpDns, Chain):
 
 
 def ShowRules():
+    os.environ['sudopswd']='kali'  # DELETE THIS LATER
     response = sb.check_output(["sudo", "-S", "iptables", "-S"],
                                input=os.environ['sudopswd'], encoding="ascii")
     return response
@@ -64,7 +65,7 @@ def AddRule(Chain, SourcDest, IpDns, WhatDo):
     print(Chain)
     sb.run(["sudo", "-S", "iptables", "-A", Chain, SourcDest, IpDns, "-j", WhatDo],
            input=os.environ['sudopswd'], encoding="ascii")
-    #addJson(IpDns, Chain)
+    addJson(IpDns, Chain)
 
 
 def deleteRule(Chain, ChainLinkNumber):
@@ -109,3 +110,16 @@ def importChain(FileName):
             sb.run(item,
                    input=os.environ['sudopswd'], encoding="ascii")
     pass
+
+def chain_names():
+    allrules=ShowRules().split("\n")
+    chains = []
+
+
+    for item in allrules:
+        if '-A' not in item:
+            if item:
+                chains.append(item.split()[1])
+    print(chains)
+
+    return chains
