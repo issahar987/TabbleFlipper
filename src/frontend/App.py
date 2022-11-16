@@ -36,6 +36,7 @@ class App(ctk.CTk, tk.Tk):
                                                        button_width=self.button_width)
 
         print(self.ip_list_frame)
+        self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
         self.functions_frame = functions_frame.FunctionsFrame(master=self,
                                                               width=self.width,
                                                               height=(

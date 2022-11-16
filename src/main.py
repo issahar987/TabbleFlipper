@@ -9,6 +9,8 @@ import socket
 
 enter_sudo.App_enter_sudo().mainloop()
 if __name__ == "__main__":
+    ctk.set_appearance_mode("dark")
+    ctk.set_default_color_theme("dark-blue")
     #  create a window first
     # define window dimensions width and height
     WINDOW_WIDTH = 600

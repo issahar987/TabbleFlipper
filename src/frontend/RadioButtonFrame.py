@@ -13,6 +13,7 @@ class RadioButtonFrame(ctk.CTkFrame):
         self.ip_list = ip_list[0:12]
         self.configure(height=frame_height, width=400)
         self.dns_dict = {}
+        self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
         path = Path("src/frontend").parent.parent.absolute()
 
         if os.stat(f'{path}/INPUT_dns.json').st_size != 0:

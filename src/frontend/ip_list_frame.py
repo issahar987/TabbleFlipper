@@ -16,3 +16,4 @@ class IpListFrame(ctk.CTkFrame):
         self.configure(width = self.width,
                        height = self.height)
         self.grid_propagate(False)
+        self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black

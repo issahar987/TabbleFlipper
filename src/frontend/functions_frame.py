@@ -23,6 +23,7 @@ class FunctionsFrame(ctk.CTkFrame):
         self.configure(width = self.width,
                        height = self.height,
                        border_width=0,)
+        # self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
         self.grid_propagate(False)
 
         print(ip_list_frame)
