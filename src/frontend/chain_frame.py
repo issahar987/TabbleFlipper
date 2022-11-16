@@ -22,7 +22,7 @@ class ChainFrame(ctk.CTkFrame):
         self.grid_propagate(False)
 
         self.optionmenu = ctk.CTkOptionMenu(master=self,
-                                            values=["option 1", "option 2"],
+                                            values=Flipper_Back.chain_names(),
                                             command=self.optionmenu_callback)
         # print(self.optionmenu.bg_color)
         self.configure(fg_color=['#EBEBEC', '#212325'])
