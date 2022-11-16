@@ -31,4 +31,6 @@ if __name__ == "__main__":
     # lock window to not be resizable
     app.resizable(False, False)
     # initialise the window
+    app.title('Table Flipper')
+    # change name of the app
     app.mainloop()
