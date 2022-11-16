@@ -35,7 +35,6 @@ def addJson(IpDns, Chain):
 
 
 def ShowRules():
-    os.environ['sudopswd']='kali'  # DELETE THIS LATER
     response = sb.check_output(["sudo", "-S", "iptables", "-S"],
                                input=os.environ['sudopswd'], encoding="ascii")
     return response
