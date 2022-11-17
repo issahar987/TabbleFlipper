@@ -56,15 +56,16 @@ def ClearAll():
     pass
 
 
-def AddRule(Chain, SourcDest, IpDns, WhatDo):
-    if SourcDest == "source":
-        SourcDest = "-s"
-    else:
-        SourcDest = "-d"
-    print(Chain)
-    sb.run(["sudo", "-S", "iptables", "-A", Chain, SourcDest, IpDns, "-j", WhatDo],
+def AddRule(flagi):
+    start = ["sudo", "-S", "iptables", "-A"]
+    start.reverse()
+    for item in start:
+        flagi.insert(0, item)
+    flagi.insert(-1, "-j")
+    print(flagi)
+    sb.run(flagi,
            input=os.environ['sudopswd'], encoding="ascii")
-    addJson(IpDns, Chain)
+    #addJson(IpDns, Chain)
 
 
 def deleteRule(Chain, ChainLinkNumber):
@@ -110,10 +111,10 @@ def importChain(FileName):
                    input=os.environ['sudopswd'], encoding="ascii")
     pass
 
-def chain_names():
-    allrules=ShowRules().split("\n")
-    chains = []
 
+def chain_names():
+    allrules = ShowRules().split("\n")
+    chains = []
 
     for item in allrules:
         if '-A' not in item:
