@@ -7,7 +7,7 @@ import socket as soc
 
 def EnterSudo(passwd):
     os.environ['sudopswd'] = passwd
-    print(sb.check_output(["sudo", "-S", "ls"],
+    print(sb.run(["sudo", "-S", "cat", "INPUT_dns.json"],
                           input=os.environ['sudopswd'], encoding="ascii"))
     pass
 
