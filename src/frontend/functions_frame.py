@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
-from backend import Flipper_Back
+from backend import Flipper_Back, general
 from frontend import RadioButtonFrame as RBF
 from pathlib import Path
 import os
@@ -11,7 +11,7 @@ import socket
 
 
 class FunctionsFrame(ctk.CTkFrame):
-    def __init__(self, width, height, button_width, ip_list_frame, *args, **kwargs):
+    def __init__(self, width, height, button_width, ip_list_frame, chain_frame, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.width=width
         self.height=height
@@ -19,6 +19,7 @@ class FunctionsFrame(ctk.CTkFrame):
         self.padx=43
         self.pady=20
         self.ip_list_frame=ip_list_frame
+        self.chain_frame=chain_frame
 
         self.configure(width = self.width,
                        height = self.height,
@@ -67,6 +68,8 @@ class FunctionsFrame(ctk.CTkFrame):
     
     def refresh(self):
         # IP_tables = Flipper_Back.ShowChain("INPUT").split("\n")
+        chain=self.chain_frame.get_value()
+        general.read_iptables_chain(chain)
         
         IP_tables = Flipper_Back.ShowRules().split("\n")
         IP_tables_filtered = []

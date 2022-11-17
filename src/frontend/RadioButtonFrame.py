@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
-from backend import Flipper_Back
+from backend import Flipper_Back, general
 from pathlib import Path
 import os
 import json
@@ -14,10 +14,12 @@ class RadioButtonFrame(ctk.CTkFrame):
         self.configure(height=frame_height, width=400)
         self.dns_dict = {}
         self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
-        path = Path("src/frontend").parent.parent.absolute()
+        self.path = Path("src/frontend").parent.parent.absolute()
+        self.filename = f'{self.path}/INPUT_dns.json'
 
-        if os.stat(f'{path}/INPUT_dns.json').st_size != 0:
-            with open (f'{path}/INPUT_dns.json', 'r') as f:
+        general.check_dns_json(self.filename)
+        if os.stat(self.filename).st_size != 0:
+            with open (self.filename, 'r') as f:
                 data = json.load(f)
             print(data)
 

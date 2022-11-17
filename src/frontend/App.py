@@ -34,16 +34,14 @@ class App(ctk.CTk, tk.Tk):
                                                        height=(
                                                            65 * self.height) / 100,
                                                        button_width=self.button_width)
-
-        print(self.ip_list_frame)
         self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
         self.functions_frame = functions_frame.FunctionsFrame(master=self,
                                                               width=self.width,
                                                               height=(
                                                                   10 * self.height) / 100,
                                                               button_width=self.button_width,
-                                                              ip_list_frame=self.ip_list_frame)
-
+                                                              ip_list_frame=self.ip_list_frame,
+                                                              chain_frame=self.chain_frame)
         self.new_rule_frame = new_rule_frame.NewRuleFrame(master=self,
                                                           width=self.width,
                                                           height=(

@@ -21,6 +21,7 @@ class ChainFrame(ctk.CTkFrame):
         
         self.grid_propagate(False)
 
+
         self.optionmenu = ctk.CTkOptionMenu(master=self,
                                             values=Flipper_Back.chain_names(),
                                             command=self.optionmenu_callback)
@@ -29,15 +30,11 @@ class ChainFrame(ctk.CTkFrame):
 
         self.optionmenu.pack(pady=self.pady, anchor='n')
 
+
     def optionmenu_callback(self, choice):
         print("optionmenu dropdown clicked:", choice)
 
+    def get_value(self):
+        print(self.optionmenu.get())
 
-    # def optionmenu_callback(choice):
-    #     print("optionmenu dropdown clicked:", choice)
-
-    #     combobox = customtkinter.CTkOptionMenu(master=app,
-    #                                            values=["option 1", "option 2"],
-    #                                            command=optionmenu_callback)
-    #     combobox.pack(padx=20, pady=10)
-    #     combobox.set("option 2")  # set initial value
+        return self.optionmenu.get()
