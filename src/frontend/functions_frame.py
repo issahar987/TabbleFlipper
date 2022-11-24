@@ -69,24 +69,7 @@ class FunctionsFrame(ctk.CTkFrame):
     def refresh(self):
         # IP_tables = Flipper_Back.ShowChain("INPUT").split("\n")
         chain=self.chain_frame.get_value()
-        general.read_iptables_chain(chain)
-        
-        IP_tables = Flipper_Back.ShowRules().split("\n")
-        IP_tables_filtered = []
-        IP_list = []
-        for item in IP_tables:  # delete chain names in IP_tables
-            if '-A' in item:
-                if item:
-                    IP_tables_filtered.append(item.split())
-        if IP_tables_filtered:
-            for item in IP_tables_filtered:
-                print(item)
-                del item[0:3]  # delete flags
-                del item[1:3]  # delete -j and DROP
-                item = item[0][:-3]  # delete netmask /32
-                IP_list.append(item)
-        print(IP_list)
-        print(self.ip_list_frame)
+        IP_list = general.ip_to_dns(chain)
 
         self.radio_button_frame = RBF.RadioButtonFrame(self.ip_list_frame,
                                                        frame_height=self.ip_list_frame["height"],

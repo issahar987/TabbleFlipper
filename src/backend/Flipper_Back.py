@@ -11,7 +11,17 @@ def EnterSudo(passwd):
                           input=os.environ['sudopswd'], encoding="ascii"))
     pass
 
+def get_host_dict(IpDns):
+    if (re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', IpDns)):
+        return 0
+    data = {}
+    print(IpDns)
+    print(soc.gethostbyname_ex(IpDns))
+    for item in soc.gethostbyname_ex(IpDns)[2]:
+            data[item] = IpDns
 
+    return data
+    
 def addJson(IpDns, Chain):
     if (re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', IpDns)):
         return 0
@@ -23,10 +33,6 @@ def addJson(IpDns, Chain):
             f.close
     except:
         pass
-    print(soc.gethostbyname_ex(IpDns))
-    print(type(soc.gethostbyname_ex(IpDns)))
-    # for item in soc.gethostbyname(IpDns):
-    # data[IpDns] = soc.gethostbyname_ex(IpDns)[2]
     with open(txtfile, 'w') as f:
         for item in soc.gethostbyname_ex(IpDns)[2]:
             data[item] = IpDns
@@ -57,15 +63,26 @@ def ClearAll():
 
 
 def AddRule(flagi):
+    print(flagi)  # ['INPUT', '-p --dport 80', 'www.gooogle.com', 'DROP']
+    Chain=flagi[0]
+    IpDns=flagi[2]
+    IPs = get_host_dict(IpDns)
+    if IPs == 0:
+        IPs = [IpDns]
     start = ["sudo", "-S", "iptables", "-A"]
     start.reverse()
     for item in start:
         flagi.insert(0, item)
     flagi.insert(-1, "-j")
-    print(flagi)
-    sb.run(flagi,
-           input=os.environ['sudopswd'], encoding="ascii")
-    #addJson(IpDns, Chain)
+    # ['sudo', '-S', 'iptables', '142.250.179.174', 'INPUT', '-d', 'youtube.com', '-j', 'DROP']
+
+    for ip in IPs:
+        print(ip)
+        flagi[6]=ip
+        print(flagi)
+        sb.run(flagi,
+            input=os.environ['sudopswd'], encoding="ascii")
+    addJson(IpDns, Chain)
 
 
 def deleteRule(Chain, ChainLinkNumber):

@@ -31,8 +31,8 @@ class RadioButtonFrame(ctk.CTkFrame):
 
 
         self.radio_button_var = ctk.StringVar(value="")
-        for count, item in enumerate(self.dns_dict, start=1):
-            self.radio_button = ctk.CTkRadioButton(self, text=f"{item} [IP count: {len(self.dns_dict[item])}]", value=f"{count}", variable=self.radio_button_var)
+        for count, item in enumerate(self.ip_list, start=1):
+            self.radio_button = ctk.CTkRadioButton(self, text=f"{item}", value=f"{count}", variable=self.radio_button_var)
             self.radio_button.grid(row=count, column=0, padx=10, pady=10, sticky="nw")
     def get_value(self):
         """ returns selected value as a string, returns an empty string if nothing selected """
