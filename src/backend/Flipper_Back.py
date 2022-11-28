@@ -7,25 +7,33 @@ import socket as soc
 
 def EnterSudo(passwd):
     os.environ['sudopswd'] = passwd
+    print(sb.run(["sudo", "-S", "cat", "INPUT_dns.json"],
+                          input=os.environ['sudopswd'], encoding="ascii"))
     pass
 
-
-def addJson(IpDns, Chain):
+def get_host_dict(IpDns):
     if (re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', IpDns)):
         return 0
-    txtfile = Chain+'_dns.json'
+    data = {}
+    print(IpDns)
+    print(soc.gethostbyname_ex(IpDns))
+    for item in soc.gethostbyname_ex(IpDns)[2]:
+            data[item] = IpDns
+
+    return data
+    
+def addJson(Ips, Chain):
+    file_name = Chain+'_dns.json'
     data = {}
     try:
-        with open(txtfile) as f:
+        with open(file_name) as f:
             data = json.load(f)
             f.close
     except:
         pass
-    print(soc.gethostbyname_ex(IpDns))
-    print(type(soc.gethostbyname_ex(IpDns)))
-    # for item in soc.gethostbyname(IpDns):
-    data[IpDns] = soc.gethostbyname_ex(IpDns)[2]
-    with open(txtfile, 'w') as f:
+    with open(file_name, 'w') as f:
+        for ip in Ips:
+            data[ip] = Ips[ip]
         json.dump(data, f, ensure_ascii=False, indent=4)
     pass
 
@@ -52,10 +60,25 @@ def ClearAll():
     pass
 
 
-def AddRule(Chain, SourcDest, IpDns, WhatDo):
-    sb.run(["sudo", "-S", "iptables", "-A", Chain, SourcDest, IpDns, "-j", WhatDo],
-           input=os.environ['sudopswd'], encoding="ascii")
-    addJson(IpDns, Chain)
+def AddRule(flagi):
+    print(f'used flags: {flagi}')  # ['INPUT', '-p --dport 80', 'www.gooogle.com', 'DROP']
+    Chain=flagi[0]
+    IpDns=flagi[2]
+    IPs = get_host_dict(IpDns)
+    if IPs == 0:
+        IPs = [IpDns]
+    start = ["sudo", "-S", "iptables", "-A"]
+    start.reverse()
+    for item in start:
+        flagi.insert(0, item)
+    flagi.insert(-1, "-j")
+    # ['sudo', '-S', 'iptables', '142.250.179.174', 'INPUT', '-d', 'youtube.com', '-j', 'DROP']
+
+    for ip in IPs:
+        flagi[6]=ip
+        sb.run(flagi,
+            input=os.environ['sudopswd'], encoding="ascii")
+    addJson(IPs, Chain)
 
 
 def deleteRule(Chain, ChainLinkNumber):
@@ -69,13 +92,11 @@ def exportChain(Chain):
     # delete first three IPtables string
     IP_tables = IP_tables.splitlines()
     del IP_tables[0]
-    print(IP_tables)
     data = {}
     with open(f'{Chain}_export.json', 'w') as file:
         for chainlink in IP_tables:
             chainlink = chainlink.split(" ")
             del chainlink[:1]
-            print(chainlink)
             ip = chainlink[2][:-3]  # delete netmask /32
             print(type(chainlink[2][:-3]))
             print(soc.gethostbyaddr(ip))
@@ -90,16 +111,28 @@ def exportChain(Chain):
     pass
 
 
-def importChain(FileName):
-    with open(FileName,) as file:
-        lines = file.readlines()
-        for item in lines:
-            item = "sudo -S iptables " + item
-            item = item.split(" ")
-            del item[-1]
-            sb.run(item,
-                   input=os.environ['sudopswd'], encoding="ascii")
-    pass
+def importChain(Chain):
+    data = {}
+
+    with open(f'{Chain}_export.json', 'r') as file:
+        data = json.load(file)
+        flagi = [] # ['INPUT', '-p --dport 80', 'www.gooogle.com', 'DROP']
+        for item in data:
+            print(data[item])
+            flagi.append(data[item]['chainname'])
+            flagi.append(data[item]['direction'])
+            flagi.append(item)
+            flagi.append(data[item]['action'])
+            AddRule(flagi)
 
 
-EnterSudo("")
+def chain_names():
+    allrules = ShowRules().split("\n")
+    chains = []
+
+    for item in allrules:
+        if '-A' not in item:
+            if item:
+                chains.append(item.split()[1])
+
+    return chains
