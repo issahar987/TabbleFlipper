@@ -15,7 +15,7 @@ class RadioButtonFrame(ctk.CTkFrame):
         self.dns_dict = {}
         self.configure(fg_color=['#EBEBEC', '#212325'])  # sets widget color to black
         self.path = Path("src/frontend").parent.parent.absolute()
-        self.filename = f'{self.path}/INPUT_dns.json'
+        self.filename = f'{self.path}/{chain}_dns.json'
         self.chain = chain
         self.index = 0
 

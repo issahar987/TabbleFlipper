@@ -28,6 +28,7 @@ def read_iptables():
             del item[-2:]  # delete -j and DROP
             item[1] = item[1][:-3]  # delete netmask /32
             IP_list.append(item)
+    print(IP_list)
     print("END OF READ IPTABLES")
     return IP_list
 
