@@ -20,6 +20,7 @@ class FunctionsFrame(ctk.CTkFrame):
         self.pady=20
         self.ip_list_frame=ip_list_frame
         self.chain_frame=chain_frame
+        self.chain=self.chain_frame.get_value()
 
         self.configure(width = self.width,
                        height = self.height,
@@ -56,30 +57,23 @@ class FunctionsFrame(ctk.CTkFrame):
 
     def clear(self):
         self.entry.delete(0, 'end')
-
-    def import_(self):
-        Flipper_Back.imortChain('EXPORT.txt')
-        self.refresh()
-        print("importing")
-
-    def export(self):
-        print("exporting")
-        Flipper_Back.exportChain("INPUT")
     
     def refresh(self):
         # IP_tables = Flipper_Back.ShowChain("INPUT").split("\n")
-        chain=self.chain_frame.get_value()
-        IP_list = general.ip_to_dns(chain)
+        self.chain=self.chain_frame.get_value()
+        IP_list = general.ip_to_dns(self.chain)
 
         self.radio_button_frame = RBF.RadioButtonFrame(self.ip_list_frame,
                                                        frame_height=self.ip_list_frame["height"],
-                                                       ip_list=[])
+                                                       ip_list=[],
+                                                       chain=self.chain)
         # self.radio_button_frame.configure(fg_color=self.frame_bottom_right.fg_color)
         self.radio_button_frame.grid(row=0, column=0, padx=4 * self.padx, sticky="nw")
 
         self.radio_button_frame = RBF.RadioButtonFrame(self.ip_list_frame,
                                                        frame_height=self.ip_list_frame["height"],
-                                                       ip_list=IP_list)
+                                                       ip_list=IP_list,
+                                                       chain=self.chain)
         # self.radio_button_frame.configure(fg_color=self.frame_bottom_right.fg_color)
         self.radio_button_frame.grid(row=0, column=0, padx=4 * self.padx, sticky="nw")
 
@@ -90,11 +84,24 @@ class FunctionsFrame(ctk.CTkFrame):
         # connect frame scroll event to CTk scrollbar
         # self.radio_button_frame.configure(yscrollcommand=self.scrollbar.set)
     
+
     def clear_one(self):
         selected_value = self.radio_button_frame.get_value()
-        print(selected_value)
-        Flipper_Back.deleteRule("INPUT", selected_value)
+        splitted_selected_value = selected_value.split()  # * index | dns
+        dns_dict = self.radio_button_frame.get_dns_dict()
+        self.chain = self.radio_button_frame.get_chain()
+
+        index = int(splitted_selected_value[0])
+        dns_dict_selection = dns_dict[splitted_selected_value[1]]
+        len_dns_dict_selection = len(dns_dict_selection)
+
+        print(f'This is index {index} in clear_one')
+        for i in range(0, len_dns_dict_selection):
+            Flipper_Back.deleteRule(self.chain, str(index - i))
+
         self.refresh()
+
+
     def input_dns_json(self):
         path = Path("src/frontend").parent.parent.absolute()
 
@@ -102,6 +109,8 @@ class FunctionsFrame(ctk.CTkFrame):
             with open (f'{path}/INPUT_dns.json', 'w') as f:
                 data = json.load(f)
             print(data)
+
+
     def clear_iptables(self):
         Flipper_Back.ClearAll()
         self.refresh()

@@ -10,8 +10,10 @@ import json
 
 
 class NewRuleFrame(ctk.CTkFrame):
-    def __init__(self, width, height, button_width, *args, **kwargs):
+    def __init__(self, width, height, button_width, chain_frame, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.chain_frame=chain_frame
+        self.chain=self.chain_frame.get_value()
         self.width = width
         self.height = height
         self.button_width = button_width
@@ -46,10 +48,10 @@ class NewRuleFrame(ctk.CTkFrame):
         submit.App_Submit()
         print("new_rule")
 
-    def import_(self):
-        Flipper_Back.imortChain('EXPORT.txt')
-        print("importing")
-
     def export(self):
         print("exporting")
-        Flipper_Back.exportChain("INPUT")
+        Flipper_Back.exportChain(self.chain)
+
+    def import_(self):
+        Flipper_Back.importChain(self.chain)
+        print("importing")

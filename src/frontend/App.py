@@ -44,9 +44,9 @@ class App(ctk.CTk, tk.Tk):
                                                               chain_frame=self.chain_frame)
         self.new_rule_frame = new_rule_frame.NewRuleFrame(master=self,
                                                           width=self.width,
-                                                          height=(
-                                                              10 * self.height) / 100,
-                                                          button_width=self.button_width)
+                                                          height=(10 * self.height) / 100,
+                                                          button_width=self.button_width,
+                                                          chain_frame=self.chain_frame)
 
         self.chain_frame.grid(
             column=0, row=0, padx=self.padx, pady=0, sticky="n")
