@@ -12,9 +12,10 @@ def EnterSudo(passwd):
     pass
 
 def get_host_dict(IpDns):
-    if (re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', IpDns)):
-        return 0
     data = {}
+    if (re.match('^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$', IpDns)):
+        data[IpDns] = IpDns
+        return data
     print(IpDns)
     print(soc.gethostbyname_ex(IpDns))
     for item in soc.gethostbyname_ex(IpDns)[2]:
@@ -78,6 +79,7 @@ def AddRule(flagi):
         flagi[6]=ip
         sb.run(flagi,
             input=os.environ['sudopswd'], encoding="ascii")
+    print(IPs)
     addJson(IPs, Chain)
 
 
